@@ -5,6 +5,7 @@ getJasmineRequireObj().StringPrettyPrinter = function(j$) {
   }
 
   PrettyPrinter.prototype.format = function(value) {
+    if (this._string_too_long_) return;
     this.ppNestLevel_++;
     try {
       if (j$.util.isUndefined(value)) {
@@ -120,7 +121,11 @@ getJasmineRequireObj().StringPrettyPrinter = function(j$) {
   };
 
   StringPrettyPrinter.prototype.append = function(value) {
+    if(this.string.length > 1000000) {
+      this.string = this.string.substr(0, 1000) + " ... (object too long)"
+    }
     this.string += value;
+    this._string_too_long_ = true;
   };
 
   return StringPrettyPrinter;
